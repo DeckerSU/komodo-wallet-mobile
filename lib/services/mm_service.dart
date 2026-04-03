@@ -66,7 +66,7 @@ class MMService {
 
   /// We're using the netid of 8762 as part of the bracking changes in MM2
   /// warrenting a new netid.
-  int netid = 8762;
+  int netid = 6133;
 
   /// Effective memory used by the application, MiB
   /// As of now it is specific to iOS
