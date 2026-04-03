@@ -16,6 +16,7 @@ class ConfigMm2 {
     this.userhome,
     this.passphrase,
     this.rpcPassword,
+    this.seednodes,
     this.coins,
     this.dbdir,
     this.allowWeakPassword = false,
@@ -29,6 +30,9 @@ class ConfigMm2 {
         userhome: json['userhome'],
         passphrase: json['passphrase'],
         rpcPassword: json['rpc_password'],
+        seednodes: json['seednodes'] != null
+            ? List<String>.from(json['seednodes'])
+            : null,
         coins: json['coins'] ?? [],
         dbdir: json['dbdir'],
         allowWeakPassword: json['allow_weak_password'] ?? false,
@@ -41,6 +45,7 @@ class ConfigMm2 {
   String userhome;
   String passphrase;
   String rpcPassword;
+  List<String> seednodes;
   List<dynamic> coins;
   String dbdir;
   bool allowWeakPassword;
@@ -53,6 +58,7 @@ class ConfigMm2 {
         'userhome': userhome,
         'passphrase': passphrase,
         'rpc_password': rpcPassword,
+        if (seednodes != null && seednodes.isNotEmpty) 'seednodes': seednodes,
         'coins': coins,
         'dbdir': dbdir,
         'allow_weak_password': allowWeakPassword,

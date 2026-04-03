@@ -361,6 +361,13 @@ class MMService {
       userhome: filesPath,
       passphrase: passphrase,
       rpcPassword: rpcPass,
+      seednodes: const [
+        'seed01.kmdefi.net',
+        'seed03.kmdefi.net',
+        'kdfseed1.decker.im',
+        'staking1.gleec.com',
+        'staking2.gleec.com',
+      ],
       coins: await readJsonCoinInit(),
       dbdir: filesPath,
       allowWeakPassword: false,
