@@ -1,0 +1,97 @@
+name: Build and Release APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build from'
+        required: true
+        default: 'master'
+
+jobs:
+  build-and-release:
+    name: Build APK and publish release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Set up Java 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Install Dart SDK
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y apt-transport-https
+          wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub \
+            | sudo gpg --dearmor -o /usr/share/keyrings/dart.gpg
+          echo 'deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main' \
+            | sudo tee /etc/apt/sources.list.d/dart_stable.list
+          sudo apt-get update -q
+          sudo apt-get install -y dart
+          echo "/usr/lib/dart/bin" >> $GITHUB_PATH
+          echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: Install FVM and Flutter 2.8.1
+        run: |
+          dart pub global activate fvm
+          fvm install 2.8.1
+          fvm use 2.8.1 --force
+
+      - name: Accept Android SDK licenses
+        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+      - name: Install Python dependencies
+        run: pip3 install -r .docker/requirements.txt
+
+      - name: Update API binaries
+        run: python3 .docker/update_api.py --force
+
+      - name: Get Flutter dependencies
+        run: fvm flutter pub get --suppress-analytics
+
+      - name: Build debug APK
+        run: fvm flutter build apk --debug
+
+      - name: Determine version and tag
+        id: meta
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | cut -d'+' -f1)
+          COMMIT=$(git rev-parse --short HEAD)
+          TAG="v${VERSION}-${COMMIT}"
+          APK_NAME="komodo-wallet-decker-${VERSION}-${COMMIT}-debug.apk"
+          echo "version=${VERSION}"  >> $GITHUB_OUTPUT
+          echo "commit=${COMMIT}"    >> $GITHUB_OUTPUT
+          echo "tag=${TAG}"          >> $GITHUB_OUTPUT
+          echo "apk_name=${APK_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Rename APK
+        run: cp build/app/outputs/flutter-apk/app-debug.apk "${{ steps.meta.outputs.apk_name }}"
+
+      - name: Delete existing release and tag (if any)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.meta.outputs.tag }}"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release delete "$TAG" --yes
+          fi
+          if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
+            git push origin ":refs/tags/$TAG"
+          fi
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.meta.outputs.tag }}" \
+            --title "Komodo Wallet ${{ steps.meta.outputs.version }} (${{ steps.meta.outputs.commit }})" \
+            --notes "Built from branch \`${{ github.event.inputs.branch }}\` at commit \`${{ steps.meta.outputs.commit }}\`." \
+            --target "${{ github.event.inputs.branch }}" \
+            "${{ steps.meta.outputs.apk_name }}"
