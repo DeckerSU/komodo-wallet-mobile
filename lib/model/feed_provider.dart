@@ -11,11 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FeedProvider extends ChangeNotifier {
   FeedProvider() {
-    // TODO: re-enable news fetching once feedProviderSourceUrl cert is fixed
-    // _updateData();
-    // _ticker = Timer.periodic(const Duration(minutes: 5), (_) {
-    //   _updateData();
-    // });
+    _updateData();
+    _ticker = Timer.periodic(const Duration(minutes: 5), (_) {
+      _updateData();
+    });
   }
 
   Timer _ticker;

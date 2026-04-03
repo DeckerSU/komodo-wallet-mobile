@@ -205,7 +205,7 @@ class AppConfig {
   // endpoint source code:
   // https://github.com/KomodoPlatform/discord_feed_parser
   bool get isFeedEnabled => true;
-  String get feedProviderSourceUrl => 'https://komodo.earth/messages';
+  String get feedProviderSourceUrl => 'https://download.decker.im/news/messages.json';
   NewsSource get defaultNewsSource => NewsSource(
         name: 'Komodo #official-news',
         url:
