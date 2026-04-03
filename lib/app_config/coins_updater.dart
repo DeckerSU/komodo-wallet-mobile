@@ -38,7 +38,8 @@ class CoinUpdater {
   static const coinsRepoUrl =
       'https://raw.githubusercontent.com/KomodoPlatform/coins';
 
-  static const isUpdateEnabled = true;
+  // static const isUpdateEnabled = true;
+  static const isUpdateEnabled = false;
 
   final String localAssetPathConfig = 'assets/coins_config_tcp.json';
   final String localAssetPathCoins = 'assets/coins.json';
