@@ -127,6 +127,13 @@ class UpdateAPI:
                 with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
                     zip_ref.extractall(destination_folder)
 
+                # Rename libkdf.a to libmm2.a if present (new KDF release format)
+                libkdf_path = os.path.join(destination_folder, "libkdf.a")
+                libmm2_path = os.path.join(destination_folder, "libmm2.a")
+                if os.path.exists(libkdf_path):
+                    os.replace(libkdf_path, libmm2_path)
+                    print(f"Renamed libkdf.a -> libmm2.a")
+
                 # Make mm2 file executable for Linux
                 if platform == 'linux':
                     print("Make mm2 file executable for Linux")
