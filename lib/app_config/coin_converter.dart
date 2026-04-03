@@ -255,6 +255,7 @@ String _getColor(String coin) {
     'JUMBLR': '#2B4649',
     'KCS': '#25AF90',
     'KMD': '#7490AA',
+    'KMDCL': '#7490AA',
     'KNC': '#117980',
     'KSM': '#595959',
     'LABS': '#C1F6E1',
