@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -121,6 +122,7 @@ class _SettingPageState extends State<SettingPage> {
             _buildEnableTestCoins(),
             SizedBox(height: 2),
             _buildTitle(version),
+            _buildClearCoinsCache(),
             if (appConfig.isUpdateCheckerEnabled) _buildUpdate(),
             const SizedBox(
               height: 48,
@@ -442,6 +444,22 @@ class _SettingPageState extends State<SettingPage> {
                 ]),
           );
         });
+  }
+
+  Widget _buildClearCoinsCache() {
+    return _chevronListTileHelper(
+      title: Text('Clear coins cache'),
+      onTap: () async {
+        final directory = await getApplicationDocumentsDirectory();
+        final cacheDir = Directory('${directory.path}/config_updates');
+        if (cacheDir.existsSync()) {
+          cacheDir.deleteSync(recursive: true);
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Coins cache cleared. Restart the app to apply.')),
+        );
+      },
+    );
   }
 
   Widget _buildUpdate() {
