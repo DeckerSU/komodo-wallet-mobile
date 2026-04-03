@@ -7,8 +7,8 @@ sudo chmod -R u+rwx /home/komodo/workspace
 sudo chown -R komodo:komodo /home/komodo/workspace
 flutter pub get
 
-curl -o assets/coins.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins 
-curl -o assets/coins_config_tcp.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/utils/coins_config_tcp.json 
+curl -o assets/coins.json https://raw.githubusercontent.com/GLEECBTC/coins/master/coins 
+curl -o assets/coins_config_tcp.json https://raw.githubusercontent.com/GLEECBTC/coins/master/utils/coins_config_tcp.json 
 mkdir -p android/app/src/main/cpp/libs/armeabi-v7a 
 mkdir -p android/app/src/main/cpp/libs/arm64-v8a 
 

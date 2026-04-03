@@ -52,7 +52,7 @@ This repository is currently in the process of undergoing safety and Flutter ver
 
 ## Getting Started
 
-Build requires up-to-date version of coins file from https://github.com/KomodoPlatform/coins
+Build requires up-to-date version of coins file from https://github.com/GLEECBTC/coins
 
 Commit hash and sha256sum of coins file is specified in `coins_ci.json`.
 You may download one manually or use `fetch_coins.sh` script on Linux and macOS or `fetch_coins.ps1` PowerShell script on Windows.
@@ -154,7 +154,7 @@ flutter pub run intl_generator:generate_from_arb --output-dir=lib/l10n  lib/loca
 
 ## Generate latest coin config:
 
-Clone the latest version of [coins](https://github.com/KomodoPlatform/coins)
+Clone the latest version of [coins](https://github.com/GLEECBTC/coins)
 
 Download and install the latest version of [python3](https://www.python.org/downloads/)
 

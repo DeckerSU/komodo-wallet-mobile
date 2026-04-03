@@ -36,7 +36,7 @@ class CoinUpdater {
   static const coinsRepoBranch = 'master';
 
   static const coinsRepoUrl =
-      'https://raw.githubusercontent.com/KomodoPlatform/coins';
+      'https://raw.githubusercontent.com/GLEECBTC/coins';
 
   static const isUpdateEnabled = true;
 

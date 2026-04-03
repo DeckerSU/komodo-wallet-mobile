@@ -8,8 +8,8 @@ if ( ( Test-Path -Path $config_init_mm2 -PathType Leaf ) -and -not ( Test-Path -
 
 # get coins file
 $coins_repo_commit = $( jq.exe -r '.coins_repo_commit' .\coins_ci.json)
-curl.exe -l "https://raw.githubusercontent.com/KomodoPlatform/coins/${coins_repo_commit}/coins" --output $config_init_mm2
-curl.exe -l "https://raw.githubusercontent.com/KomodoPlatform/coins/${coins_repo_commit}/utils/coins_config_tcp.json" --output $config_mm2
+curl.exe -l "https://raw.githubusercontent.com/GLEECBTC/coins/${coins_repo_commit}/coins" --output $config_init_mm2
+curl.exe -l "https://raw.githubusercontent.com/GLEECBTC/coins/${coins_repo_commit}/utils/coins_config_tcp.json" --output $config_mm2
 
 # clean checks from previous run
 rm .\app_assets
